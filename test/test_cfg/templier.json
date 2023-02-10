@@ -1,0 +1,27 @@
+{
+    "zxc2254": {
+        "files": [{
+            "name": "@aboba@.component.tsx",
+            "content": {
+                "labels": {
+                    "componentName": "Zalupe",
+                    "componentPropType": "zalupa"
+                  },
+                  "data": "abobobaoaboa {{ qqwdqwdqwd }}"
+            }
+        }]
+    },
+
+    "zxc22545": {
+        "files": [{
+            "name": "@aboba@.component.tsx",
+            "content": {
+                "labels": {
+                    "componentName": "Zalupe",
+                    "componentPropType": "zalupa"
+                  },
+                  "data": "abobobaoaboa {{ qqwdqwdqwd }}"
+            }
+        }]
+    }
+}

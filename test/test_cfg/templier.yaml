@@ -1,0 +1,45 @@
+---
+zxc2254:
+  files:
+  - name: "@aboba@.component.tsx"
+    content:
+      labels:
+        componentName: Zalupe
+        componentPropType: zalupa
+      data: |
+          import React from 'react';
+          
+          type {{componentPropType}}componentType = {};
+          
+          const {{componentName}} = () => {
+            return (
+              <div>
+                zxczxc daun;
+              </div>
+            )
+          }
+  - name: "@aboba@.component.tsx"
+    content:
+      labels: 
+        - componentPropType
+        - componentName
+      data: |
+          import React from 'react';
+          
+          type {{componentPropType}}componentType = {};
+          
+          const {{componentName}} = () => {
+            return (
+              <div>
+                zxczxc daun;
+              </div>
+            )
+          }        
+zxc22545:
+  files:
+  - name: "@aboba@.component.tsx"
+    content:
+      labels:
+        componentName: Zalupe
+        componentPropType: zalupa
+      data: abobobaoaboa {{ qqwdqwdqwd }}
