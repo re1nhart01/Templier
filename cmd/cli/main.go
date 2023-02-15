@@ -1,21 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
-	"gopkg.in/yaml.v3"
-	"templier.com/pkg/args"
+	"templier.com/pkg/logger"
+	"templier.com/pkg/utils"
 )
 
 func main() {
-	test := map[string]any{}
-	file, err := os.ReadFile("test/test_cfg/templier.yaml")
+	app := NewApplication()
+	err := app.RunTemplier()
 	if err != nil {
-		fmt.Println(err)
+		logger.FatalError(utils.ConstantsError["FatalError"])
 	}
-	fmt.Println(string(file))
-	yaml.Unmarshal(file, &test)
-	fmt.Println(test["zxc2254"])
-	args.GetArguments()
 }

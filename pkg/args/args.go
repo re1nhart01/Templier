@@ -29,7 +29,7 @@ type Arguments struct {
 
 func GetArguments() Arguments {
 	osArgs := os.Args
-	if len(osArgs) < 1 {
+	if len(osArgs) < 2 {
 		logger.FatalError(utils.ConstantsError["ArgumentsLengthError"])
 	}
 	usableArguments := osArgs[1:]
@@ -43,10 +43,14 @@ func GetArguments() Arguments {
 func (argsv *Arguments) getArgumentsDictionary(args []string) {
 
 	usableArgumentsLength := len(args)
-	re, _ := regexp.Compile(utils.Regexp["StringRegexp"])
+	if args[0] != utils.ReservedArguments["Help"] {
+		re, _ := regexp.Compile(utils.Regexp["StringRegexp"])
 
-	if isValid := re.Match([]byte(args[0])); !isValid {
-		logger.FatalError(utils.ConstantsError["InvalidFirstArgumentError"])
+		if isValid := re.Match([]byte(args[0])); !isValid {
+			logger.FatalError(utils.ConstantsError["InvalidFirstArgumentError"])
+		}
+	} else {
+		argsv.WithLogger = true
 	}
 
 	for i := 1; i < usableArgumentsLength; i++ {
@@ -75,6 +79,7 @@ func (argsv *Arguments) getArgumentsDictionary(args []string) {
 			argsv.WithLabel = strings.Split(list[1:len(list)-1], ",")
 			i += 1
 			break
+
 		case utils.ReservedArguments["Names"]: // -n
 			if usableArgumentsLength <= i+1 {
 				logger.FatalError(utils.ConstantsError["InvalidArrayArgError"])
@@ -83,6 +88,7 @@ func (argsv *Arguments) getArgumentsDictionary(args []string) {
 			argsv.WithNames = strings.Split(list[1:len(list)-1], ",")
 			i += 1
 			break
+
 		default: // other which not defined
 			logger.FatalError(utils.ConstantsError["InvalidArgument"])
 		}
