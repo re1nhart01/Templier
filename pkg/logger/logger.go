@@ -1,9 +1,13 @@
 package logger
 
-import "fmt"
+import (
+	"fmt"
+	"syscall"
+)
 
 const labelMessage = "@TEMPLIER Error: "
 
-func LogError(errMsg string) {
+func FatalError(errMsg string) {
 	fmt.Println(labelMessage + errMsg)
+	syscall.Exit(0)
 }
