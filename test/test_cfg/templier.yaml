@@ -18,7 +18,19 @@ zxc2254:
               </div>
             )
           }
-  - name: "@aboba@.component.tsx"
+  - name: "@aboba@.styles.tsx"
+    content:
+      labels:
+        componentName: Zalupe
+        componentPropType: zalupa
+      data: |
+          import React from 'react';
+          import { Stylesheet } from 'react-native';
+
+          export default Stylesheet.create({
+
+          })
+  - name: "@aboba@.controller.tsx"
     content:
       labels: 
         - componentPropType

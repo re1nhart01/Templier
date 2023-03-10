@@ -19,6 +19,7 @@ var ConstantsError = map[string]string{
 	"InvalidContentSection":        "Invalid content section. Content should has data and can has labels",
 	"InvalidNotEnoughLabels":       "Not enough labels. Labels in flag -l could be more than in file but not vice versa",
 	"InvalidNotEnoughLabelsSecond": "Possible: %d, but got %d",
+	"InvalidNotEnoughNames":        "Not enough names for files. Got: %d, but need: %d",
 }
 
 var ConstantsText = map[string]string{

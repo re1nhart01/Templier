@@ -42,6 +42,9 @@ func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file 
 	if !utils.CheckIsAllKeysExists(file, "name", "content") {
 		logger.FatalError(utils.ConstantsError["InvalidComponentFile"])
 	}
+	if index >= len(args.WithNames) {
+		logger.FatalError(fmt.Sprintf(utils.ConstantsError["InvalidNotEnoughNames"], index, len(args.WithNames)+1))
+	}
 	lastName := args.WithNames[index]
 	fileLabels := args.WithLabel
 	firstName := file["name"].(string)
