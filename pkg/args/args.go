@@ -1,7 +1,9 @@
 package args
 
 import (
+	"fmt"
 	"os"
+	"reflect"
 	"regexp"
 	"strings"
 
@@ -15,6 +17,7 @@ import (
 // -f - filename
 // -l - labels
 // -n - for components name
+// -p - pathname where we need to create file
 // templier compName -l [aboba, aababa] -n [zxc, zxc zxc]
 
 type Arguments struct {
@@ -23,6 +26,7 @@ type Arguments struct {
 	WithLabel    []string
 	WithNames    []string
 	WithFileName string
+	WithPathName string
 	WithHelp     bool
 	WithLogger   bool
 }
@@ -40,6 +44,18 @@ func GetArguments() Arguments {
 	return argsv
 }
 
+func (argsv Arguments) PrintArgs() {
+	val := reflect.ValueOf(argsv)
+
+	values := make([]interface{}, val.NumField())
+
+	for i := 0; i < val.NumField(); i++ {
+		values[i] = val.Field(i).Interface()
+	}
+
+	fmt.Println(values)
+}
+
 func (argsv *Arguments) getArgumentsDictionary(args []string) {
 
 	usableArgumentsLength := len(args)
@@ -49,6 +65,7 @@ func (argsv *Arguments) getArgumentsDictionary(args []string) {
 		if isValid := re.Match([]byte(args[0])); !isValid {
 			logger.FatalError(utils.ConstantsError["InvalidFirstArgumentError"])
 		}
+		argsv.Component = args[0]
 	} else {
 		argsv.WithLogger = true
 	}
@@ -88,9 +105,17 @@ func (argsv *Arguments) getArgumentsDictionary(args []string) {
 			argsv.WithNames = strings.Split(list[1:len(list)-1], ",")
 			i += 1
 			break
+		case utils.ReservedArguments["Path"]:
+			if usableArgumentsLength <= i+1 {
+				logger.FatalError(utils.ConstantsError["InvalidArrayArgError"])
+			}
+			path := checkIsNextArgValid(args[i+1], "PathRegexp", "asdsasa")
+			argsv.WithPathName = path
+			i += 1
+			break
 
 		default: // other which not defined
-			logger.FatalError(utils.ConstantsError["InvalidArgument"])
+			// logger.FatalError(utils.ConstantsError["InvalidArgument"])
 		}
 	}
 }

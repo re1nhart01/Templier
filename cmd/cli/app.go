@@ -34,6 +34,13 @@ func (app *Templier) RunTemplier() (err error) {
 	}
 	mappableYaml := make(map[string]any)
 	err = yaml.Unmarshal(workingFile, &mappableYaml)
+
+	//Get needable component from yaml file
+	if mappableYaml[args.Component] == nil {
+		logger.FatalError(utils.ConstantsError["InvalidFirstArgumentError"])
+	}
+
+	err = fs.GenerateFilesFromTemplate(mappableYaml[args.Component].(map[string]any), args)
 	if err != nil {
 		logger.FatalError(utils.ConstantsError["InvalidYmlParse"])
 	}

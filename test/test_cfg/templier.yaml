@@ -9,9 +9,9 @@ zxc2254:
       data: |
           import React from 'react';
           
-          type {{componentPropType}}componentType = {};
+          type !{componentPropType}!componentType = {};
           
-          const {{componentName}} = () => {
+          const !{componentName}! = () => {
             return (
               <div>
                 zxczxc daun;
@@ -26,12 +26,12 @@ zxc2254:
       data: |
           import React from 'react';
           
-          type {{componentPropType}}componentType = {};
+          type !{componentPropType}!componentType = {};
           
-          const {{componentName}} = () => {
+          const !{componentName}! = () => {
             return (
               <div>
-                zxczxc daun;
+                zxczxc daun22222;
               </div>
             )
           }        
