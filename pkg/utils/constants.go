@@ -9,6 +9,8 @@ var ConstantsError = map[string]string{
 	"ArgumentsLengthError":         "Not enought arguments. --help to look out",
 	"InvalidFirstArgumentError":    "First argument should to be a component name from yaml file. Or component is invalid. Allow only string(in any case) or(and) numbers",
 	"InvalidArrayArgError":         "Invalid value. Arguments -l or -n should to be as array without spaces. Example: -f [first,second,third]",
+	"InvalidCountError":            "Invalid count. Argument -c should be solo number or from:to pattern. Example: -c 1 OR -c 2:4",
+	"InvalidCountOutOfRange":       "Count out of range, possible from %d to %d",
 	"InvalidNameArgError":          "Invalid flag for file name. Example: -f TemplierFileConfig.yaml",
 	"InvalidArgument":              "Invalid Argument. --help to look out",
 	"InvalidFS":                    "Invalid filesystem operation. Might be caught if file not exists. Current path:",
@@ -30,6 +32,7 @@ var Regexp = map[string]string{
 	"StringRegexp":           "^[a-zA-Z0-9]+$",
 	"FileNameRegexp":         "^([a-zA-Z0-9].+)\\.(yaml|yml)$",
 	"PathRegexp":             "((?:[^/]*/)*)(.*)",
+	"CountRegexp":            "^([0-9]{0,}|[0-9]{0,}:[0-9]{0,})$",
 	"StringArrayRegexp":      "^\\[(.*?),?(.*?)\\]$",
 	"TemplateRegexp":         "!{[a-zA-Z]+}!",
 	"FileNameTemplateRegexp": "@[a-zA-Z]+@",
@@ -99,6 +102,7 @@ var ReservedArguments = map[string]string{
 	"FileName": "-f",
 	"Help":     "--help",
 	"Path":     "-p",
+	"Count":    "-c",
 }
 
 var SystemInfo = map[string]string{

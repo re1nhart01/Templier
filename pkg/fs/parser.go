@@ -2,7 +2,9 @@ package fs
 
 import (
 	"fmt"
+	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -22,11 +24,33 @@ func GenerateFilesFromTemplate(component map[string]any, args args.Arguments) (e
 	if files == nil {
 		logger.FatalError(utils.ConstantsError["InvalidComponentConf"])
 	}
-	wg.Add(len(files))
+	filesLen := len(files)
 	loggerChan := make(chan string, 1)
 
-	for index, file := range files {
-		go generateFileFromTemplate(loggerChan, args, file.(map[string]any), index)
+	parsedCount := parseCount(args.WithCount, filesLen)
+	countType := reflect.TypeOf(parsedCount).String()
+	if countType == "int" {
+		if parsedCount.(int) < 0 || parsedCount.(int) > filesLen {
+			logger.FatalError(fmt.Sprintf(utils.ConstantsError["InvalidCountOutOfRange"], 0, filesLen-1))
+		}
+		selectedFile := files[parsedCount.(int)].(map[string]any)
+		generateFileFromTemplate(loggerChan, args, selectedFile, parsedCount.(int), false)
+		return
+	}
+	castedFromTo := parsedCount.([]int)
+	from := castedFromTo[0]
+	to := castedFromTo[1]
+
+	if from > to || from < 0 || to > filesLen {
+		logger.FatalError(fmt.Sprintf(utils.ConstantsError["InvalidCountOutOfRange"], 0, filesLen-1))
+	}
+
+	wg.Add(to - from)
+
+	for i := from; i < to; i++ {
+
+		go generateFileFromTemplate(loggerChan, args, files[i].(map[string]any), i, true)
+
 		select {
 		case msg := <-loggerChan:
 			fmt.Println(msg)
@@ -38,9 +62,10 @@ func GenerateFilesFromTemplate(component map[string]any, args args.Arguments) (e
 	return nil
 }
 
-func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file map[string]any, index int) {
-
-	defer wg.Done()
+func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file map[string]any, index int, wgEnabled bool) {
+	if wgEnabled {
+		defer wg.Done()
+	}
 
 	if !utils.CheckIsAllKeysExists(file, "name", "content") {
 		logger.FatalError(utils.ConstantsError["InvalidComponentFile"])
@@ -93,4 +118,26 @@ func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file 
 	}
 	//write data logger into log channel and done wait group
 	loggerChan <- fmt.Sprintf(utils.ConstantsText["LOGWritingFile"], correctFileName, fileData)
+}
+
+func parseCount(countString string, maxCount int) any {
+	if countString == "" {
+		return []int{0, maxCount}
+	}
+	c, err := strconv.Atoi(countString)
+	if err != nil {
+
+		fromTo := strings.Split(countString, ":")
+		if len(fromTo) != 2 {
+			logger.FatalError(utils.ConstantsError["InvalidCountError"])
+		}
+
+		castedFrom, _ := strconv.Atoi(fromTo[0])
+		castedTo, _ := strconv.Atoi(fromTo[1])
+
+		castedFromTo := []int{castedFrom, castedTo}
+
+		return castedFromTo
+	}
+	return c
 }

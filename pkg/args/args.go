@@ -18,6 +18,11 @@ import (
 // -l - labels
 // -n - for components name
 // -p - pathname where we need to create file
+/*
+	-c 1:3 - generate files from 1 to 3
+	-c 2   - generate file with count 2
+*/
+
 // templier compName -l [aboba, aababa] -n [zxc, zxc zxc]
 
 type Arguments struct {
@@ -25,6 +30,7 @@ type Arguments struct {
 	System       string
 	WithLabel    []string
 	WithNames    []string
+	WithCount    string
 	WithFileName string
 	WithPathName string
 	WithHelp     bool
@@ -109,13 +115,19 @@ func (argsv *Arguments) getArgumentsDictionary(args []string) {
 			if usableArgumentsLength <= i+1 {
 				logger.FatalError(utils.ConstantsError["InvalidArrayArgError"])
 			}
-			path := checkIsNextArgValid(args[i+1], "PathRegexp", "asdsasa")
+			path := checkIsNextArgValid(args[i+1], "PathRegexp", "InvalidArrayArgError")
 			argsv.WithPathName = path
 			i += 1
 			break
-
+		case utils.ReservedArguments["Count"]:
+			if usableArgumentsLength <= i+1 {
+				logger.FatalError(utils.ConstantsError["InvalidCountError"])
+			}
+			path := checkIsNextArgValid(args[i+1], "CountRegexp", "InvalidCountError")
+			argsv.WithCount = path
+			i += 1
 		default: // other which not defined
-			// logger.FatalError(utils.ConstantsError["InvalidArgument"])
+			logger.FatalError(utils.ConstantsError["InvalidArgument"])
 		}
 	}
 }
