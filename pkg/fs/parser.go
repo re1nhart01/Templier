@@ -39,6 +39,9 @@ func GenerateFilesFromTemplate(component map[string]any, args args.Arguments) (e
 }
 
 func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file map[string]any, index int) {
+
+	defer wg.Done()
+
 	if !utils.CheckIsAllKeysExists(file, "name", "content") {
 		logger.FatalError(utils.ConstantsError["InvalidComponentFile"])
 	}
@@ -90,6 +93,4 @@ func generateFileFromTemplate(loggerChan chan string, args args.Arguments, file 
 	}
 	//write data logger into log channel and done wait group
 	loggerChan <- fmt.Sprintf(utils.ConstantsText["LOGWritingFile"], correctFileName, fileData)
-	defer wg.Done()
-
 }
