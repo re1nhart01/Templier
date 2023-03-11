@@ -87,12 +87,14 @@ const Helper = `
 			
 	<------------------------------------------->
 	Flags:
-	-l - flag to set labels which define in {{ }} brackets
+	-l - flag to set labels which define in !{ }! brackets
 	-n - flag to set file names for files inside @ @ brackets
 	--log - flag to set logger on, which will log every step
 	--help - current flag
 	-f - filename of file with components	
 	-p - pathname, where we need to create files
+	-c 1:3 - generate files from 1 to 3
+	-c 2   - generate file with count 2
 `
 
 var ReservedArguments = map[string]string{
