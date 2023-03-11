@@ -13,6 +13,11 @@
 -c 2   - generate file with count 2
 ```
 
+## Example of string: 
+
+```
+templier componentName -f test/test_cfg/templier.yaml -p \somePath\ -l [messageQueueRow,itemsRowComponent] -n [view,styles,controller] -c 3:2
+```
 
 ## Example of templier.yaml snippet:
 
